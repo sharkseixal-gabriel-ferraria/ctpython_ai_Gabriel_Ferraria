@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 from deepface import DeepFace
+import tensorflow as tf
+import keras
+import pyautogui as auto
 import time
 
 # Load Haar cascades
@@ -14,7 +17,7 @@ if not cam.isOpened():
     print("Error: Could not open camera.")
 else:
     frame_count = 0
-    emotion = "neutral"
+    emotion = "Vai ganhar o 50/50"
 
     while True:
         ret, frame = cam.read()
@@ -34,7 +37,7 @@ else:
                 cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
             # Run emotion detection every 30 frames
-            if frame_count % 30 == 0:
+            if frame_count % 120 == 0:
                 try:
                     result = DeepFace.analyze(roi_color, actions=['emotion'], enforce_detection=False)
                     emotion = result[0]['dominant_emotion']
@@ -47,15 +50,18 @@ else:
 
             # Trigger actions
             if emotion == 'happy':
+                print("Estás feliz? mas quem é que te deixou estar feliz,toma")
                 auto.press("win")
-                auto.typewrite("chrome")
+                auto.typewrite("opera")
                 auto.press("enter")
-                time.sleep(1)
-                auto.press
-
+                time.sleep(2)
+                auto.typewrite("League of Legends download")
             elif emotion == 'sad':
-                auto.press("win")
-                auto.typewrite("get out")
+                print("Estás triste")
+            elif emotion == 'angry':
+                print("Estás chatiado")
+            elif emotion == 'fear':
+                print("Medricas")
 
         frame_count += 1
         cv2.imshow('Emotion-Aware Face Detection', frame)

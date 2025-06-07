@@ -5,6 +5,8 @@ import tensorflow as tf
 import keras
 import pyautogui as auto
 import time
+from playsound import playsound
+import threading
 
 # Load Haar cascades
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -13,6 +15,12 @@ eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml
 # Start video capture
 cam = cv2.VideoCapture(0)
 
+def play_sound():
+    playsound('C:\\Users\\CTPAI - GABRIEL F\\Sad.wav')
+
+
+
+stop_detection = False
 if not cam.isOpened():
     print("Error: Could not open camera.")
 else:
@@ -36,8 +44,8 @@ else:
             for (ex, ey, ew, eh) in eyes:
                 cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
 
-            # Run emotion detection every 30 frames
-            if frame_count % 120 == 0:
+            # Run emotion detection every 120 frames
+            if frame_count % 30 == 0:
                 try:
                     result = DeepFace.analyze(roi_color, actions=['emotion'], enforce_detection=False)
                     emotion = result[0]['dominant_emotion']
@@ -56,10 +64,22 @@ else:
                 auto.press("enter")
                 time.sleep(2)
                 auto.typewrite("League of Legends download")
+                auto.press("enter")
+
+
+                cam.release()
+                cv2.destroyAllWindows()
+                exit()
+
             elif emotion == 'sad':
                 print("Estás triste")
+                # Call the function in a new thread
+                threading.Thread(target=play_sound, daemon=True).start()
+
+
             elif emotion == 'angry':
                 print("Estás chatiado")
+
             elif emotion == 'fear':
                 print("Medricas")
 

@@ -18,6 +18,9 @@ cam = cv2.VideoCapture(0)
 def play_sound():
     playsound('C:\\Users\\CTPAI - GABRIEL F\\Sad.wav')
 
+def play_chill():
+    playsound('C:\\Users\\CTPAI - GABRIEL F\\Chill.wav')
+
 
 
 stop_detection = False
@@ -79,9 +82,20 @@ else:
 
             elif emotion == 'angry':
                 print("Estás chatiado")
+                threading.Thread(target=play_chill, daemon=True).start()
 
             elif emotion == 'fear':
                 print("Medricas")
+                auto.press("win")
+                auto.typewrite("opera")
+                auto.press("enter")
+                time.sleep(2)
+                auto.typewrite("https://i5.walmartimages.com/seo/10-Freddy-Large-Size-Five-Nights-at-Freddy-s-FNAF-Brown-Bear-Plush-Doll-Toy_abda3d68-ec3b-4547-a468-ff4ff90c4e08.f9e7514a15171130fdf69679ee662712.jpeg")
+                auto.press("enter")
+
+                cam.release()
+                cv2.destroyAllWindows()
+                exit()
 
         frame_count += 1
         cv2.imshow('Emotion-Aware Face Detection', frame)
